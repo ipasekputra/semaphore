@@ -1,8 +1,11 @@
 ---
 - hosts: web_servers
-  gather_facts: no
+  gather_facts: yes
   become: true
+
   tasks:
-    - name: Print OS info
-      ansible.builtin.package:
+    - name: Install Apache
+      ansible.builtin.apt:
         name: apache2
+        state: present
+        update_cache: yes
