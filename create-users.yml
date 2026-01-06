@@ -1,18 +1,18 @@
----
-- name: Create user alice with sudo privileges (raw)
+- name: Create alice with password and sudo
   hosts: all
-  gather_facts: no
   become: true
 
   tasks:
     - name: Create user alice
-      ansible.builtin.raw: |
-        id alice &>/dev/null || useradd -m -s /bin/bash alice
+      ansible.builtin.user:
+        name: alice
+        password: "{{ 'password123' | password_hash('sha512') }}"
+        shell: /bin/bash
+        state: present
+        create_home: yes
 
-    - name: Set password for alice
-      ansible.builtin.raw: |
-        echo "alice:password123" | sudo chpasswd
-
-    - name: Add alice to sudo group
-      ansible.builtin.raw: |
-        usermod -aG sudo alice
+    - name: Add alice to sudo
+      ansible.builtin.user:
+        name: alice
+        groups: sudo
+        append: yes
