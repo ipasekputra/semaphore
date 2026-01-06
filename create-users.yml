@@ -1,18 +1,16 @@
 ---
-- name: Create users without Python
+- name: Create user alice with root privileges (raw)
   hosts: all
-  gather_facts: no       # avoid Python fact-gathering
+  gather_facts: no
   become: true
 
-  vars:
-    users_to_create:
-      - username: alice
-        password: "password123"
-
   tasks:
-    - name: Create users
+    - name: Create user alice
       ansible.builtin.raw: |
-        id {{ item.username }} &>/dev/null || \
-        useradd -m -s /bin/bash {{ item.username }} && \
-        echo "{{ item.username }}:{{ item.password }}" | chpasswd
-      loop: "{{ users_to_create }}"
+        id alice &>/dev/null || \
+        useradd -m -s /bin/bash alice && \
+        echo "alice:password123" | chpasswd
+
+    - name: Add alice to sudoers
+      ansible.builtin.raw: |
+        usermod -aG sudo alice
