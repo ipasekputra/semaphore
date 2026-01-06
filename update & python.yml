@@ -1,24 +1,11 @@
 ---
-- name: Update APT and install Python dependencies
+- name: Update and upgrade APT without Python
   hosts: all
-  become: true   # run as root
-  vars:
-    apt_packages:
-      - python3-six
+  become: true
 
   tasks:
     - name: Update APT cache
-      ansible.builtin.apt:
-        update_cache: yes
-        cache_valid_time: 3600  # optional: cache valid for 1 hour
+      ansible.builtin.raw: apt update -y
 
-    - name: Upgrade all packages (optional)
-      ansible.builtin.apt:
-        upgrade: dist
-        autoremove: yes
-        autoclean: yes
-
-    - name: Ensure required Python packages are installed
-      ansible.builtin.apt:
-        name: "{{ apt_packages }}"
-        state: present
+    - name: Upgrade all packages
+      ansible.builtin.raw: apt upgrade -y
