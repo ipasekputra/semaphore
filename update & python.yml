@@ -1,6 +1,7 @@
 ---
 - name: Update and upgrade APT without Python
   hosts: all
+  gather_facts: no      # <--- disable fact gathering!
   become: true
 
   tasks:
