@@ -1,11 +1,18 @@
 ---
-- hosts: web_servers
-  gather_facts: no
+- name: Install Apache without Python dependency
+  hosts: all
+  gather_facts: no       # avoid fact gathering
   become: true
 
   tasks:
+    - name: Update APT cache
+      ansible.builtin.raw: apt update -y
+
     - name: Install Apache
-      ansible.builtin.apt:
-        name: apache2
-        state: present
-        update_cache: yes
+      ansible.builtin.raw: apt install -y apache2
+
+    - name: Ensure Apache is started
+      ansible.builtin.raw: systemctl enable apache2
+       
+    - name: Start Apache service
+      ansible.builtin.raw: systemctl start apache2
