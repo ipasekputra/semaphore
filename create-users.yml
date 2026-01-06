@@ -1,0 +1,18 @@
+---
+- name: Create users without Python
+  hosts: all
+  gather_facts: no       # avoid Python fact-gathering
+  become: true
+
+  vars:
+    users_to_create:
+      - username: alice
+        password: "password123"
+
+  tasks:
+    - name: Create users
+      ansible.builtin.raw: |
+        id {{ item.username }} &>/dev/null || \
+        useradd -m -s /bin/bash {{ item.username }} && \
+        echo "{{ item.username }}:{{ item.password }}" | chpasswd
+      loop: "{{ users_to_create }}"
