@@ -1,5 +1,5 @@
 - name: Create alice with password and sudo
-  hosts: web_servers
+  hosts: server
   gather_facts: true
   become: true
 
