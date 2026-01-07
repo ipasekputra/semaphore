@@ -3,16 +3,13 @@
   become: true
 
   tasks:
-    - name: Create user alice
-      ansible.builtin.user:
+    - user:
         name: alice
         password: "{{ 'password123' | password_hash('sha512') }}"
         shell: /bin/bash
-        state: present
         create_home: yes
 
-    - name: Add alice to sudo
-      ansible.builtin.user:
+    - user:
         name: alice
         groups: sudo
         append: yes
