@@ -5,12 +5,12 @@
 
   tasks:
     - user:
-        name: alice
+        name: made
         password: "{{ 'password123' | password_hash('sha512') }}"
         shell: /bin/bash
         create_home: yes
 
     - user:
-        name: alice
+        name: made
         groups: sudo
         append: yes
