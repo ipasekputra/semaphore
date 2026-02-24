@@ -6,4 +6,4 @@
 
   tasks:
     - name: Create File Test
-      ansible.builtin.raw: nano tes.txt
+      ansible.builtin.raw: touch tes.txt
