@@ -1,0 +1,9 @@
+---
+- name: test create file
+  hosts: server_prod
+  gather_facts: no      # <--- disable fact gathering!
+  become: true
+
+  tasks:
+    - name: Create File Test
+      ansible.builtin.raw: nano tes.txt
